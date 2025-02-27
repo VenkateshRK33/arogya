@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arogya - Online Pharmacy</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4EB1A6;
+            --primary-dark: #3A8A80;
+            --secondary-color: #ffffff;
+            --accent-color: #E8F8F6;
+            --text-color: #2C3E50;
+            --background-color: #ffffff;
+            --danger-color: #f44336;
+            --success-color: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7f9;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: #e6f3ff;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        /* Categories */
+        .categories {
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+            padding: 0 1rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .category-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Products */
+        .products {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .product-price {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .buy-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .buy-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Cart Modal */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 400px;
+            background: white;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 2rem;
+        }
+
+        .cart-modal.active {
+            display: block;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .cart-items {
+            max-height: calc(100vh - 250px);
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-right: 1rem;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-total {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 2px solid #eee;
+        }
+
+        .confirm-order {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+
+        .confirm-order:hover {
+            background-color: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .cart-modal {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <h1>Arogya Pharmacy</h1>
+            </div>
+            <div class="cart-icon" onclick="toggleCart()">
+                <i class="material-icons">shopping_cart</i>
+                <span class="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h2>It's Easy To Be Healthy</h2>
+        <p>Find all your medical needs in one place</p>
+    </div>
+
+    <div class="categories">
+        <h3>Featured Categories</h3>
+        <div class="category-grid">
+            <div class="category-card">
+                <i class="material-icons">medication</i>
+                <h4>Medicines</h4>
+            </div>
+            <div class="category-card">
+                <i class="material-icons">healing</i>
+                <h4>First Aid</h4>
+            </div>
+            <div class="category-card">
+                <i class="material-icons">sanitizer</i>
+                <h4>Personal Care</h4>
+            </div>
+            <div class="category-card">
+                <i class="material-icons">medical_services</i>
+                <h4>Medical Devices</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="products">
+        <h3>Popular Products</h3>
+        <div class="products-grid" id="products-grid">
+            <!-- Products will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <i class="material-icons" onclick="toggleCart()" style="cursor: pointer;">close</i>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Cart items will be populated by JavaScript -->
+        </div>
+        <div class="cart-total">
+            <h4>Total: ₹<span id="cart-total">0</span></h4>
+            <button class="confirm-order" onclick="confirmOrder()">Confirm Order</button>
+        </div>
+    </div>
+
+    <script>
+        // Sample product data
+        const products = [
+            {
+                id: 1,
+                name: "Digital Blood Pressure Monitor",
+                price: 1999,
+                image: "/placeholder.svg?height=150&width=150"
+            },
+            {
+                id: 2,
+                name: "Pulse Oximeter",
+                price: 1499,
+                image: "/placeholder.svg?height=150&width=150"
+            },
+            {
+                id: 3,
+                name: "First Aid Kit",
+                price: 799,
+                image: "/placeholder.svg?height=150&width=150"
+            },
+            {
+                id: 4,
+                name: "Digital Thermometer",
+                price: 299,
+                image: "/placeholder.svg?height=150&width=150"
+            }
+        ];
+
+        // Shopping cart
+        let cart = [];
+
+        // Initialize products
+        function initializeProducts() {
+            const productsGrid = document.getElementById('products-grid');
+            products.forEach(product => {
+                const productElement = document.createElement('div');
+                productElement.className = 'product-card';
+                productElement.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <h4 class="product-title">${product.name}</h4>
+                    <p class="product-price">₹${product.price}</p>
+                    <button class="buy-button" onclick="addToCart(${product.id})">Add to Cart</button>
+                `;
+                productsGrid.appendChild(productElement);
+            });
+        }
+
+        // Add to cart
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                cart.push(product);
+                updateCartCount();
+                updateCartItems();
+            }
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            const cartCount = document.querySelector('.cart-count');
+            cartCount.textContent = cart.length;
+        }
+
+        // Update cart items
+        function updateCartItems() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item';
+                itemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-details">
+                        <h4>${item.name}</h4>
+                        <p>₹${item.price}</p>
+                    </div>
+                `;
+                cartItems.appendChild(itemElement);
+                total += item.price;
+            });
+
+            cartTotal.textContent = total;
+        }
+
+        // Toggle cart modal
+        function toggleCart() {
+            const cartModal = document.getElementById('cart-modal');
+            cartModal.classList.toggle('active');
+        }
+
+        // Confirm order
+        function confirmOrder() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            // Simulate blockchain transaction
+            alert('Order confirmed! Transaction hash: 192.168.1.1');
+            cart = [];
+            updateCartCount();
+            updateCartItems();
+            toggleCart();
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', initializeProducts);
+    </script>
+</body>
+</html>
